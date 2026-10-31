@@ -627,6 +627,14 @@ $total_bayar = $total_subtotal;
                                     <span class="input-group-text bg-light fw-bold" style="font-size: 13px;">Rp</span>
                                     <input type="number" name="nominal_bayar" id="nominal-bayar" class="form-control" placeholder="0" min="0" step="1" required <?= empty($_SESSION['cart']) ? 'disabled' : ''; ?>>
                                 </div>
+                                <div class="mt-2 d-flex flex-wrap gap-1">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 11px;" onclick="setNominal(<?= (int)$total_bayar; ?>)" <?= empty($_SESSION['cart']) ? 'disabled' : ''; ?>>Uang Pas</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 11px;" onclick="setNominal(10000)" <?= empty($_SESSION['cart']) ? 'disabled' : ''; ?>>10.000</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 11px;" onclick="setNominal(20000)" <?= empty($_SESSION['cart']) ? 'disabled' : ''; ?>>20.000</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 11px;" onclick="setNominal(50000)" <?= empty($_SESSION['cart']) ? 'disabled' : ''; ?>>50.000</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 11px;" onclick="setNominal(100000)" <?= empty($_SESSION['cart']) ? 'disabled' : ''; ?>>100.000</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger py-1 px-2" style="font-size: 11px;" onclick="setNominal(0)" <?= empty($_SESSION['cart']) ? 'disabled' : ''; ?>>Reset</button>
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -680,6 +688,13 @@ $total_bayar = $total_subtotal;
                 displayKembalian.className = 'fw-bold text-danger';
                 if (btnSubmit) btnSubmit.disabled = true;
             }
+        }
+
+        function setNominal(amount) {
+            if (!inputBayar) return;
+            inputBayar.value = amount > 0 ? amount : '';
+            hitungKembalian();
+            inputBayar.focus();
         }
 
         if (inputBayar) {
