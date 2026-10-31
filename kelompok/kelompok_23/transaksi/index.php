@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $conn->commit();
 
         $_SESSION['cart'] = [];
-        $_SESSION['flash_success'] = "Transaksi $invoice_number berhasil diproses! Stok berhasil dipotong. Kembalian: Rp " . number_format($change_amount, 0, ',', '.');
+        $_SESSION['flash_success'] = "Transaksi $invoice_number berhasil diproses! Stok berhasil dipotong. Kembalian: Rp " . number_format($change_amount, 0, ',', '.') . " <a href='struk.php?invoice=$invoice_number' target='_blank' class='btn btn-sm btn-dark ms-2 fw-bold text-white'><i class='bi bi-printer me-1'></i>Cetak Struk</a>";
     } catch (Exception $e) {
         $conn->rollback();
         $_SESSION['flash_error'] = "Transaksi dibatalkan: " . $e->getMessage();
@@ -464,8 +464,8 @@ $total_bayar = $total_subtotal;
 
         <section class="content-section">
             <?php if ($pesan_sukses): ?>
-                <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-                    <i class="bi bi-check-circle me-1"></i><?= htmlspecialchars($pesan_sukses); ?>
+                <div class="alert alert-success alert-dismissible fade show mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2" role="alert">
+                    <div><i class="bi bi-check-circle me-1"></i><?= $pesan_sukses; ?></div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             <?php endif; ?>
