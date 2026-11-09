@@ -1,5 +1,4 @@
-<?php
-?>
+<?php ?>
 <div class="page-heading">
     <div>
         <p class="eyebrow">MANAJEMEN PENILAIAN TERPADU</p>
