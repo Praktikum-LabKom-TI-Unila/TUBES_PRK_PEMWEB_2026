@@ -2,7 +2,11 @@
 require __DIR__ . '/includes/auth.php';
 requireLogin();
 $menus = ['beranda' => 'Beranda', 'kelas' => 'Data kelas', 'siswa' => 'Data siswa',
+<<<<<<< HEAD
     'mapel' => 'Mata pelajaran', 'penilaian' => 'Penilaian', 'periode' => 'Periode penilaian', 'penugasan' => 'Penugasan guru', 'klasifikasi' => 'Klasifikasi siswa', 'profil' => 'Profil saya'];
+=======
+    'mapel' => 'Mata pelajaran', 'periode' => 'Periode penilaian', 'penugasan' => 'Penugasan guru', 'klasifikasi' => 'Klasifikasi siswa', 'laporan' => 'Rekap & laporan', 'profil' => 'Profil saya'];
+>>>>>>> da717c93253e5dd7b31f2b4a41a8ec3dbe022e76
 $page = $_GET['halaman'] ?? 'beranda';
 if (!isset($menus[$page])) { http_response_code(404); exit('Halaman tidak ditemukan.'); }
 ?>
@@ -16,8 +20,14 @@ if (!isset($menus[$page])) { http_response_code(404); exit('Halaman tidak ditemu
         <link rel="stylesheet" href="css/style.css">
         <?php if ($page === 'klasifikasi'): ?>
             <script src="js/klasifikasi.js" defer></script>
+<<<<<<< HEAD
         <?php elseif ($page === 'penilaian'): ?>
             <script src="js/penilaian.js" defer></script>
+=======
+        <?php elseif ($page === 'laporan'): ?>
+            <!-- Dikerjakan oleh: Jehan Reza Pahlevi (NPM. 2415061067) -->
+            <script src="js/kalkulasi.js" defer></script>
+>>>>>>> da717c93253e5dd7b31f2b4a41a8ec3dbe022e76
         <?php else: ?>
             <script src="js/app.js" defer></script>
         <?php endif; ?>
@@ -141,6 +151,9 @@ if (!isset($menus[$page])) { http_response_code(404); exit('Halaman tidak ditemu
                 <?php include __DIR__ . '/views/penilaian.php'; ?>
                 <?php elseif ($page === 'klasifikasi'): ?>
                 <?php include __DIR__ . '/views/klasifikasi.php'; ?>
+                <?php elseif ($page === 'laporan'): ?>
+                <!-- Dikerjakan oleh: Jehan Reza Pahlevi (NPM. 2415061067) -->
+                <?php include __DIR__ . '/views/laporan.php'; ?>
 
                 <?php elseif ($page === 'profil'): ?>
                     <div class="page-heading">
