@@ -4,6 +4,7 @@ require_once '../config/database.php';
 require_once '../includes/functions.php';
 
 wajibAdmin();
+
 $q_total = $pdo->query("SELECT COUNT(*) FROM laporan");
 $total_laporan = $q_total->fetchColumn();
 
