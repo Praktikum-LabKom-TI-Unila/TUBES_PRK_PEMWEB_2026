@@ -2,7 +2,7 @@
 require __DIR__ . '/includes/auth.php';
 requireLogin();
 $menus = ['beranda' => 'Beranda', 'kelas' => 'Data kelas', 'siswa' => 'Data siswa',
-    'mapel' => 'Mata pelajaran', 'periode' => 'Periode penilaian', 'penugasan' => 'Penugasan guru', 'klasifikasi' => 'Klasifikasi siswa', 'profil' => 'Profil saya'];
+    'mapel' => 'Mata pelajaran', 'penilaian' => 'Penilaian', 'periode' => 'Periode penilaian', 'penugasan' => 'Penugasan guru', 'klasifikasi' => 'Klasifikasi siswa', 'profil' => 'Profil saya'];
 $page = $_GET['halaman'] ?? 'beranda';
 if (!isset($menus[$page])) { http_response_code(404); exit('Halaman tidak ditemukan.'); }
 ?>
@@ -16,6 +16,8 @@ if (!isset($menus[$page])) { http_response_code(404); exit('Halaman tidak ditemu
         <link rel="stylesheet" href="css/style.css">
         <?php if ($page === 'klasifikasi'): ?>
             <script src="js/klasifikasi.js" defer></script>
+        <?php elseif ($page === 'penilaian'): ?>
+            <script src="js/penilaian.js" defer></script>
         <?php else: ?>
             <script src="js/app.js" defer></script>
         <?php endif; ?>
@@ -135,6 +137,8 @@ if (!isset($menus[$page])) { http_response_code(404); exit('Halaman tidak ditemu
                             <small>Data pada ringkasan mengikuti hak akses akun yang sedang masuk.</small>
                         </section>
                     </div>
+                <?php elseif ($page === 'penilaian'): ?>
+                <?php include __DIR__ . '/views/penilaian.php'; ?>
                 <?php elseif ($page === 'klasifikasi'): ?>
                 <?php include __DIR__ . '/views/klasifikasi.php'; ?>
 
