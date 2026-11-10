@@ -5,7 +5,7 @@ $idGuru = $_SESSION['guru']['id_guru'];
 $aksi = $_GET['aksi'] ?? '';
 $jenisValid = ['Tugas', 'Kuis', 'UTS', 'UAS'];
 
-// Ambil penugasan beserta pengecekan hak akses (admin: semua, guru: miliknya).
+// Ambil penugasan
 function ambilPenugasan(PDO $pdo, $id) {
     $id = positiveId($id);
     $stmt = $pdo->prepare('SELECT * FROM PENUGASAN_MENGAJAR WHERE id_penugasan = ?');
@@ -18,7 +18,7 @@ function ambilPenugasan(PDO $pdo, $id) {
     return $row;
 }
 
-// Ambil penilaian beserta pengecekan akses lewat penugasannya.
+// Ambil penilaian
 function ambilPenilaian(PDO $pdo, $id) {
     $id = positiveId($id);
     $stmt = $pdo->prepare('SELECT * FROM PENILAIAN WHERE id_penilaian = ?');
@@ -29,7 +29,7 @@ function ambilPenilaian(PDO $pdo, $id) {
     return $row;
 }
 
-// Validasi nilai wajib angka 0-100; kembalikan null jika kosong.
+// Validasi nilai
 function validasiNilai($value) {
     $value = trim((string)$value);
     if ($value === '') return null;
@@ -40,9 +40,9 @@ function validasiNilai($value) {
     return round((float)$value, 2);
 }
 
-/* ---------------------------- GET ---------------------------- */
+//Get
 if ($method === 'GET') {
-    // Daftar penugasan yang boleh dipilih (kelas + mapel + periode).
+    // Daftar penugasan yang boleh dipilih
     if ($aksi === 'konteks') {
         $sql = 'SELECT pm.id_penugasan, k.nama_kelas, m.nama_mapel,
                     pr.tahun_ajaran, pr.semester, pr.status_aktif
@@ -58,7 +58,7 @@ if ($method === 'GET') {
         respond($stmt->fetchAll());
     }
 
-    // Daftar penilaian dalam satu penugasan + progres pengisian nilai.
+    // Daftar penilaian
     if ($aksi === 'daftar') {
         $pm = ambilPenugasan($pdo, $_GET['id_penugasan'] ?? 0);
         $stmt = $pdo->prepare('SELECT COUNT(*) FROM SISWA WHERE id_kelas = ?');
@@ -81,7 +81,7 @@ if ($method === 'GET') {
         respond($rows);
     }
 
-    // Seluruh siswa satu kelas beserta nilainya pada satu penilaian.
+    //Nilai siswa satu kelas
     if ($aksi === 'nilai') {
         $p = ambilPenilaian($pdo, $_GET['id_penilaian'] ?? 0);
         $stmt = $pdo->prepare('SELECT s.id_siswa, s.nisn, s.nama_siswa, n.nilai
@@ -98,7 +98,7 @@ if ($method === 'GET') {
         ], 'siswa' => $stmt->fetchAll()]);
     }
 
-    // Rekap rata-rata nilai per komponen untuk setiap siswa.
+    // Rekap rata-rata nilai
     if ($aksi === 'rekap') {
         $pm = ambilPenugasan($pdo, $_GET['id_penugasan'] ?? 0);
         $stmt = $pdo->prepare('SELECT id_siswa, nisn, nama_siswa FROM SISWA
@@ -125,8 +125,7 @@ if ($method === 'GET') {
     respond(null, 'Aksi tidak dikenal.', 404);
 }
 
-/* ------------------- POST: simpan nilai satu kelas ------------------- */
-// Body JSON datar: {"s_<id_siswa>": "85", "s_<id_siswa>": "", ...}
+//Simpan Nilai
 if ($method === 'POST' && $aksi === 'simpan_nilai') {
     $p = ambilPenilaian($pdo, $_GET['id_penilaian'] ?? 0);
     $input = inputData();
@@ -135,7 +134,7 @@ if ($method === 'POST' && $aksi === 'simpan_nilai') {
     $stmt->execute([$p['penugasan']['id_kelas']]);
     $siswaKelas = array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
 
-    // Validasi semua dulu sebelum menyimpan apa pun.
+    // Validasi
     $data = [];
     foreach ($input as $key => $value) {
         if (!preg_match('/^s_(\d+)$/', (string)$key, $m)) continue;
@@ -162,13 +161,12 @@ if ($method === 'POST' && $aksi === 'simpan_nilai') {
     respond(['tersimpan' => $tersimpan], 'Nilai berhasil disimpan.');
 }
 
-/* ---------------- POST / PUT / DELETE: CRUD penilaian ---------------- */
+//CRUD Penilaian
 if (!in_array($method, ['POST', 'PUT', 'DELETE'])) respond(null, 'Metode tidak didukung.', 405);
 
 if ($method === 'DELETE') {
     $p = ambilPenilaian($pdo, $_GET['id'] ?? 0);
     $pdo->beginTransaction();
-    // Nilai milik penilaian ini dihapus dulu karena relasi bersifat RESTRICT.
     $pdo->prepare('DELETE FROM NILAI_DAN_PENGUMPULAN WHERE id_penilaian = ?')->execute([$p['id_penilaian']]);
     $pdo->prepare('DELETE FROM PENILAIAN WHERE id_penilaian = ?')->execute([$p['id_penilaian']]);
     $pdo->commit();
