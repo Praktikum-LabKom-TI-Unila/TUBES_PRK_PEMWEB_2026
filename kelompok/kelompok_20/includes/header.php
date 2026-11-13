@@ -23,14 +23,12 @@ if (!isset($pageTitle)) {
             <div class="navbar-menu">
                 <?php if (isLogin()): ?>
                     <?php if (isAdmin()): ?>
-                        <!-- Menu Khusus Admin (Biar Nggak Dobel & Nggak Bingung) -->
                         <a href="/admin/dashboard.php" class="nav-link">Dashboard</a>
                         <a href="/admin/kelola.php" class="nav-link">Semua Laporan</a>
                         <a href="/admin/kategori.php" class="nav-link">Kelola Kategori</a>
                         <a href="/admin/rekap.php" class="nav-link">Rekap Cetak</a>
                         <a href="/profil.php" class="nav-link">Profil</a>
                     <?php else: ?>
-                        <!-- Menu Khusus Mahasiswa / Pengguna Biasa -->
                         <a href="/index.php" class="nav-link">Beranda</a>
                         <a href="/laporan_publik.php" class="nav-link">Laporan Publik</a>
                         <a href="/user/kirim.php" class="nav-link">Sampaikan Laporan</a>
@@ -41,7 +39,6 @@ if (!isset($pageTitle)) {
                     <span class="user-greeting">Halo, <strong><?= sanitize($_SESSION['nama'] ?? 'Pengguna') ?></strong></span>
                     <a href="/logout.php" class="nav-link nav-btn-logout">Keluar</a>
                 <?php else: ?>
-                    <!-- Menu Pengunjung (Belum Login) -->
                     <a href="/index.php" class="nav-link">Beranda</a>
                     <a href="/laporan_publik.php" class="nav-link">Laporan Publik</a>
                     <a href="/login.php" class="nav-link">Masuk</a>
