@@ -1,0 +1,25 @@
+.tabel-wadah {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabel-hasil {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.tabel-hasil th,
+.tabel-hasil td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tabel-hasil th {
+    font-weight: 700;
+}
+
+.sembunyi {
+    display: none;
+}

@@ -1,0 +1,41 @@
+/* Gaya tambahan khusus halaman autentikasi (tombol ikon mata password) */
+.input-sandi-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-sandi-wrap .form-control {
+  padding-right: 48px;
+}
+
+.btn-toggle-sandi {
+  position: absolute;
+  right: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--teks-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-s);
+}
+
+.btn-toggle-sandi:hover {
+  color: var(--teks);
+}
+
+.ikon-mata-tutup {
+  display: none;
+}
+
+.btn-toggle-sandi.terlihat .ikon-mata-buka {
+  display: none;
+}
+
+.btn-toggle-sandi.terlihat .ikon-mata-tutup {
+  display: block;
+}

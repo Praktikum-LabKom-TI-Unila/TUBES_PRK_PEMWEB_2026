@@ -1,6 +1,12 @@
 
 
 :root {
+  /* Alias warna untuk kompatibilitas */
+  --utama: var(--primary);
+  --primer: var(--primary);
+  --primer-2: var(--primary);
+  --permukaan: var(--kartu);
+
   /* Warna Semantik (Netral terhadap tema & lulus kontras WCAG) */
   --sukses-bg: #DCFCE7;
   --sukses-teks: #14532D;
@@ -72,4 +78,19 @@ a:hover {
 :focus-visible {
   outline: 3px solid var(--teks);
   outline-offset: 2px;
+}
+
+/* Helper Perataan Ikon Font Awesome */
+.fa-solid, .fa-regular, .fa-brands {
+  display: inline-block;
+  vertical-align: -0.125em;
+}
+
+.btn .fa-solid, .btn .fa-regular {
+  margin-right: 6px;
+}
+
+.sidebar-link .fa-solid, .sidebar-link .fa-regular {
+  width: 20px;
+  text-align: center;
 }

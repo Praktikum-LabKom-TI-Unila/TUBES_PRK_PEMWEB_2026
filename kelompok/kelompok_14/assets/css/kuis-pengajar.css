@@ -1,0 +1,123 @@
+.kuis-panel-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kuis-panel-judul {
+  margin: 0 0 6px 0;
+}
+
+.kuis-filter-card {
+  margin-bottom: 24px;
+}
+
+.kuis-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kuis-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.kuis-filter-tab {
+  text-decoration: none;
+}
+
+.kuis-filter-tab-aktif {
+  background-color: var(--primary) !important;
+  color: var(--teks) !important;
+  font-weight: 700 !important;
+  box-shadow: var(--clay-tekan) !important;
+}
+
+.kuis-cari-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+}
+
+.kuis-cari-input {
+  width: 220px;
+}
+
+.kuis-kosong {
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.kuis-kosong-teks {
+  font-size: 1.05rem;
+  color: var(--teks-2);
+  margin: 0 0 16px 0;
+}
+
+.kuis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.kuis-kartu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kuis-kartu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.kuis-kartu-judul {
+  margin: 0 0 8px 0;
+  font-size: 1.15rem;
+}
+
+.kuis-kartu-meta {
+  margin: 0 0 12px 0;
+}
+
+.kuis-kartu-info {
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+  background-color: var(--latar-2);
+  padding: 10px 14px;
+  border-radius: var(--radius-s);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kuis-kartu-catatan {
+  font-size: 0.88rem;
+  margin-bottom: 14px;
+}
+
+.kuis-kartu-aksi {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 14px;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.kuis-form-inline {
+  margin: 0;
+}

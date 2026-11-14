@@ -1,0 +1,481 @@
+/* ============================================================================
+   assets/css/kerjakan.css
+   Gaya Tampilan Antarmuka Halaman Kerjakan Kuis (PL-05 Mode Fokus)
+   Kelompok 14 - Tugas Besar Praktikum Pemrograman Web 2026
+   PIC: Wulan (Sesi 5 - PL-05 Server & CSS)
+   
+   Sesuai Spesifikasi PRD Bagian 12.8 & Kriteria Aksesibilitas (ACC-01 s.d. ACC-06):
+   - Mobile-First: Dioptimalkan dari lebar 360 px tanpa scroll horizontal (AC-24)
+   - Target sentuh minimal 44 px untuk kenyamanan layar sentuh (ACC-06)
+   - Kontras tinggi dan feedback jelas (Benar/Salah) dengan teks & ikon (ACC-03)
+   ============================================================================ */
+
+/* --- 1. Wadah Utama Pengerjaan Kuis --- */
+.kerjakan-wrapper {
+  max-width: 780px;
+  margin: 20px auto 40px auto;
+  padding: 0 12px;
+}
+
+@media (min-width: 600px) {
+  .kerjakan-wrapper {
+    padding: 0 20px;
+    margin-top: 28px;
+  }
+}
+
+/* --- 2. Kartu Soal (.soal-card) --- */
+.soal-card {
+  background-color: var(--kartu);
+  border-radius: var(--radius-l);
+  box-shadow: var(--clay-timbul);
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+@media (min-width: 600px) {
+  .soal-card {
+    padding: 32px 28px;
+  }
+}
+
+.soal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.soal-nomor-label {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--primer);
+}
+
+.soal-poin-badge {
+  background-color: var(--permukaan);
+  color: var(--teks);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  box-shadow: var(--clay-tekan);
+}
+
+.soal-pertanyaan {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--teks);
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+@media (min-width: 600px) {
+  .soal-pertanyaan {
+    font-size: 1.25rem;
+  }
+}
+
+/* --- 3. Daftar dan Tombol Pilihan Jawaban (.opsi-list & .opsi-item) --- */
+.opsi-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.opsi-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: var(--kartu);
+  border: 2px solid transparent;
+  border-radius: var(--radius-m);
+  box-shadow: var(--clay-timbul);
+  padding: 14px 18px;
+  min-height: 52px; /* Memenuhi target sentuh minimal 44px (ACC-06) */
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--teks);
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.opsi-item:hover:not(.terkunci) {
+  transform: translateY(-2px);
+  border-color: var(--primer-2);
+}
+
+.opsi-item:active:not(.terkunci) {
+  box-shadow: var(--clay-tekan);
+  transform: translateY(0);
+}
+
+.opsi-item:focus-visible {
+  outline: 3px solid var(--primer);
+  outline-offset: 2px;
+}
+
+/* Badge Huruf A, B, C, D */
+.opsi-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: var(--permukaan);
+  color: var(--teks);
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: var(--clay-tekan);
+  flex-shrink: 0;
+}
+
+.opsi-teks {
+  flex: 1;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* Keadaan Opsi Terpilih & Terkunci */
+.opsi-item.terkunci {
+  cursor: default;
+}
+
+.opsi-item.opsi-terpilih {
+  border-color: var(--primary);
+  background-color: var(--kartu);
+}
+
+.opsi-item.opsi-terpilih .opsi-label {
+  background-color: var(--primary);
+  color: var(--teks);
+  font-weight: 800;
+}
+
+/* Keadaan Umpan Balik: BENAR (Hijau) */
+.opsi-item.opsi-benar {
+  border-color: #2e7d32 !important;
+  background-color: #e8f5e9 !important;
+  color: #1b5e20 !important;
+}
+
+.opsi-item.opsi-benar .opsi-label {
+  background-color: #2e7d32 !important;
+  color: #ffffff !important;
+}
+
+/* Keadaan Umpan Balik: SALAH (Merah) */
+.opsi-item.opsi-salah {
+  border-color: #c62828 !important;
+  background-color: #ffebee !important;
+  color: #b71c1c !important;
+}
+
+.opsi-item.opsi-salah .opsi-label {
+  background-color: #c62828 !important;
+  color: #ffffff !important;
+}
+
+/* Tanda Kunci Jawaban yang Seharusnya (jika user memilih salah) */
+.opsi-item.opsi-kunci {
+  border: 2px dashed #2e7d32 !important;
+  background-color: #f1f8e9 !important;
+}
+
+/* --- 4. Kotak Umpan Balik & Pembahasan Langsung (KRJ-02 & ACC-03) --- */
+.umpan-balik-box {
+  border-radius: var(--radius-m);
+  padding: 16px 20px;
+  margin-top: 20px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.umpan-balik-box.benar {
+  background-color: #e8f5e9;
+  border-left: 5px solid #2e7d32;
+  color: #1b5e20;
+}
+
+.umpan-balik-box.salah {
+  background-color: #ffebee;
+  border-left: 5px solid #c62828;
+  color: #b71c1c;
+}
+
+.umpan-balik-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.umpan-balik-pembahasan {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--teks);
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+/* --- 5. Grid Nomor Soal (KRJ-02, KRJ-06) --- */
+.grid-nomor-wrapper {
+  background-color: var(--kartu);
+  border-radius: var(--radius-l);
+  box-shadow: var(--clay-timbul);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.grid-nomor-header {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--teks);
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.grid-nomor-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 8px;
+}
+
+.btn-nomor {
+  min-width: 44px;
+  min-height: 44px; /* Target sentuh minimal 44px (ACC-06) */
+  border-radius: var(--radius-s);
+  border: 1px solid var(--border);
+  background-color: var(--permukaan);
+  color: var(--teks);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.btn-nomor:hover {
+  border-color: var(--primer);
+  transform: translateY(-1px);
+}
+
+/* Nomor Soal Aktif yang Sedang Dibuka */
+.btn-nomor.nomor-aktif {
+  border: 3px solid var(--teks);
+  box-shadow: var(--clay-tekan);
+  background-color: var(--accent);
+  color: var(--teks);
+  font-weight: 800;
+}
+
+/* Nomor Soal yang Sudah Terjawab */
+.btn-nomor.nomor-terjawab {
+  background-color: var(--primary);
+  color: var(--teks);
+}
+
+.btn-nomor.nomor-benar {
+  background-color: #2e7d32;
+  color: #ffffff;
+  border-color: #2e7d32;
+}
+
+.btn-nomor.nomor-salah {
+  background-color: #c62828;
+  color: #ffffff;
+  border-color: #c62828;
+}
+
+/* --- 6. Navigasi Bawah (Sebelumnya, Lanjut, Selesai) --- */
+.nav-kerjakan {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-kerjakan .btn {
+  min-height: 48px;
+  font-size: 1rem;
+  padding: 12px 24px;
+}
+
+.nav-kerjakan-aksi {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-nav-kuis {
+  min-width: 130px;
+}
+
+/* --- 7. Modal Dialog Konfirmasi Keluar & Selesai (KRJ-02, KRJ-07) --- */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-backdrop.aktif {
+  display: flex;
+}
+
+.modal-card {
+  background-color: var(--kartu);
+  border-radius: var(--radius-l);
+  box-shadow: var(--clay-timbul);
+  padding: 32px 24px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  animation: modalPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-aksi {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.modal-aksi .btn {
+  min-height: 44px; /* Target sentuh minimal 44px (AC-24, ACC-06) */
+  min-width: 44px;
+}
+
+/* --- 8. Penguatan Responsif 360px & Target Sentuh Minimal 44px (AC-24) --- */
+.kerjakan-wrapper {
+  overflow-x: clip;
+}
+
+.soal-pertanyaan,
+.umpan-balik-pembahasan,
+.opsi-teks {
+  overflow-wrap: anywhere;
+}
+
+.focus-bar .focus-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.focus-bar .focus-judul {
+  display: block;
+  overflow-wrap: break-word;
+}
+
+#tombolKeluarFokus {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .focus-bar {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .soal-card {
+    padding: 20px 16px;
+  }
+
+  .opsi-item {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .nav-kerjakan {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .nav-kerjakan-aksi {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .btn-nav-kuis {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .nav-kerjakan .btn {
+    flex: 1 1 auto;
+    min-height: 44px;
+    width: 100%;
+  }
+
+  .modal-aksi .btn {
+    flex: 1 1 120px;
+  }
+}
+
+/* --- 9. Tampilan Ringkasan Simulasi Pratinjau --- */
+.pratinjau-selesai-card {
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.pratinjau-icon-selesai {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.pratinjau-grid-stat {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.pratinjau-stat-item {
+  background: var(--latar);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  padding: 14px;
+}

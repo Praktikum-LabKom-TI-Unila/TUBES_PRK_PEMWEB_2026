@@ -1,0 +1,2 @@
+# Jangan upload file konfigurasi database lokal ke GitHub
+includes/config.local.php

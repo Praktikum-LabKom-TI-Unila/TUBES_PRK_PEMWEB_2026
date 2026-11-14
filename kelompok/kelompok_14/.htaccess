@@ -1,0 +1,15 @@
+# Matikan tampilan daftar file di folder
+Options -Indexes
+
+# Larang akses langsung lewat browser ke folder includes dan database
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^includes/ - [F,L]
+    RewriteRule ^database/ - [F,L]
+</IfModule>
+
+# Header keamanan dasar
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+</IfModule>

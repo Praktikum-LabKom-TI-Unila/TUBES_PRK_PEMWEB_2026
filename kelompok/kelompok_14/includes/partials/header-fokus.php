@@ -18,14 +18,14 @@ require_once __DIR__ . '/head.php';
 
   <!-- Indikator Waktu Pengerjaan -->
   <div class="timer-pill" id="wadahTimer" role="timer" aria-live="polite">
-    <span aria-hidden="true">&#9201;</span>
+    <span aria-hidden="true"><i class="fa-solid fa-stopwatch"></i></span>
     <span id="timerDisplay"><?= e($sisaWaktu) ?></span>
   </div>
 
   <!-- Tombol Keluar dari Kuis -->
   <div class="focus-aksi">
     <a href="<?= e($linkKeluar) ?>" class="btn btn-sm btn-batal" id="tombolKeluarFokus">
-      Keluar
+      <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar
     </a>
   </div>
 </header>

@@ -23,6 +23,9 @@ $judulHalaman = $judulHalaman ?? 'DynaQuiz';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= e($judulHalaman) ?></title>
 
+  <!-- Pustaka Ikon Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
   <!-- Berkas CSS Tema dan Komponen Claymorphism -->
   <link rel="stylesheet" href="<?= $root ?>assets/css/tema.css">
   <link rel="stylesheet" href="<?= $root ?>assets/css/dasar.css">

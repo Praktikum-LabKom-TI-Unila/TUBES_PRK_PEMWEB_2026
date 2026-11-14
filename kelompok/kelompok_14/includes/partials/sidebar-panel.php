@@ -5,9 +5,10 @@
 $root = $root ?? '';
 $halamanAktif = $halamanAktif ?? '';
 
-// Ambil data peran dan nama dari sesi
-$peran = $_SESSION['pengguna']['peran'] ?? 'pengajar';
-$namaPengguna = $_SESSION['pengguna']['nama'] ?? 'Pengguna';
+// Ambil data peran dan nama dari sesi (mendukung kunci 'user' dan 'pengguna')
+$sesiUser = $_SESSION['user'] ?? $_SESSION['pengguna'] ?? null;
+$peran = $sesiUser['peran'] ?? 'pengajar';
+$namaPengguna = $sesiUser['nama'] ?? 'Pengguna';
 
 // Tautan dashboard sesuai peran
 $linkDashboard = ($peran === 'admin') ? ($root . 'admin/dashboard.php') : ($root . 'pengajar/dashboard.php');
@@ -28,12 +29,12 @@ $linkDashboard = ($peran === 'admin') ? ($root . 'admin/dashboard.php') : ($root
         <!-- Menu Khusus Admin -->
         <li>
           <a href="<?= $root ?>admin/dashboard.php" class="sidebar-link <?= $halamanAktif === 'dashboard' ? 'active' : '' ?>">
-            <span>&#128202;</span> Dashboard
+            <i class="fa-solid fa-chart-pie"></i> Dashboard
           </a>
         </li>
         <li>
           <a href="<?= $root ?>admin/persetujuan.php" class="sidebar-link <?= $halamanAktif === 'persetujuan' ? 'active' : '' ?>">
-            <span>&#128221;</span> Persetujuan Kuis
+            <i class="fa-solid fa-clipboard-check"></i> Persetujuan Kuis
             <?php if (!empty($jumlahAntrianKuis)): ?>
               <span class="sidebar-badge"><?= (int)$jumlahAntrianKuis ?></span>
             <?php endif; ?>
@@ -41,29 +42,29 @@ $linkDashboard = ($peran === 'admin') ? ($root . 'admin/dashboard.php') : ($root
         </li>
         <li>
           <a href="<?= $root ?>admin/pengguna.php" class="sidebar-link <?= $halamanAktif === 'pengguna' ? 'active' : '' ?>">
-            <span>&#128101;</span> Kelola Pengguna
+            <i class="fa-solid fa-users"></i> Kelola Pengguna
           </a>
         </li>
         <li>
           <a href="<?= $root ?>admin/mapel.php" class="sidebar-link <?= $halamanAktif === 'mapel' ? 'active' : '' ?>">
-            <span>&#128218;</span> Kelola Mapel
+            <i class="fa-solid fa-book-open"></i> Kelola Mapel
           </a>
         </li>
         <li>
           <a href="<?= $root ?>admin/moderasi.php" class="sidebar-link <?= $halamanAktif === 'moderasi' ? 'active' : '' ?>">
-            <span>&#128737;</span> Moderasi Kuis
+            <i class="fa-solid fa-shield-halved"></i> Moderasi Kuis
           </a>
         </li>
       <?php else: ?>
         <!-- Menu Khusus Pengajar -->
         <li>
           <a href="<?= $root ?>pengajar/dashboard.php" class="sidebar-link <?= $halamanAktif === 'dashboard' ? 'active' : '' ?>">
-            <span>&#128202;</span> Dashboard
+            <i class="fa-solid fa-chart-pie"></i> Dashboard
           </a>
         </li>
         <li>
           <a href="<?= $root ?>pengajar/kuis.php" class="sidebar-link <?= $halamanAktif === 'kuis' ? 'active' : '' ?>">
-            <span>&#128221;</span> Kuis Saya
+            <i class="fa-solid fa-pen-to-square"></i> Kuis Saya
           </a>
         </li>
       <?php endif; ?>
@@ -71,12 +72,12 @@ $linkDashboard = ($peran === 'admin') ? ($root . 'admin/dashboard.php') : ($root
       <!-- Menu Bersama (Profil & Keluar) -->
       <li>
         <a href="<?= $root ?>profil.php" class="sidebar-link <?= $halamanAktif === 'profil' ? 'active' : '' ?>">
-          <span>&#128100;</span> Profil Saya
+          <i class="fa-solid fa-user"></i> Profil Saya
         </a>
       </li>
       <li>
         <a href="<?= $root ?>logout.php" class="sidebar-link">
-          <span>&#128682;</span> Keluar
+          <i class="fa-solid fa-right-from-bracket"></i> Keluar
         </a>
       </li>
     </ul>
