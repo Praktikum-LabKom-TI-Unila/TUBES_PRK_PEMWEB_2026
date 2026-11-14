@@ -5,24 +5,29 @@ Direktori ini berisi skrip utilitas untuk tim Asisten Praktikum dan CI/CD GitHub
 ---
 
 ## 1. `audit_kelompok.php` (Audit Kontribusi Lokal)
-Skrip ini digunakan oleh asisten/dosen untuk merekap riwayat commit, kontribusi anggota, dan baris kode (`+` / `-`) per kelompok secara langsung dari repositori Git lokal.
+Skrip ini digunakan oleh asisten/dosen untuk merekap riwayat commit, kontribusi anggota, baris kode (`+` / `-`), dan status Pull Request terakhir per kelompok secara langsung dari repositori Git lokal.
+
+Secara *default*, skrip menampilkan **keseluruhan riwayat commit** tanpa dibatasi.
 
 ### Cara Penggunaan:
 ```bash
-# 1. Audit kelompok tertentu (misal: Kelompok 22)
-php .github/scripts/audit_kelompok.php --kelompok=22
+# 1. Audit satu kelompok (menampilkan semua commit tanpa dibatasi)
+php .github/scripts/audit_kelompok.php --kelompok=09
 
-# 2. Audit seluruh kelompok sekaligus
+# 2. Audit seluruh kelompok sekaligus di terminal
 php .github/scripts/audit_kelompok.php --all
 
-# 3. Ekspor hasil audit seluruh kelompok ke file Markdown
-php .github/scripts/audit_kelompok.php --all --export=rekap_nilai_kontribusi.md
+# 3. ⭐ Ekspor ke file Microsoft Excel (.xls / .xlsx) dengan sheet khusus per kelompok (mirip tampilan audit di terminal) + Sheet Ringkasan
+php .github/scripts/audit_kelompok.php --all --export=rekap_nilai_kontribusi.xls
 
-# 4. Ekspor ke file spreadsheet CSV
+# 4. Ekspor ke file spreadsheet CSV (UTF-8 BOM siap buka di Excel)
 php .github/scripts/audit_kelompok.php --all --export=rekap_nilai_kontribusi.csv
 
-# 5. Menentukan batas jumlah commit terakhir yang ditampilkan (default: 10)
-php .github/scripts/audit_kelompok.php --kelompok=22 --limit=20
+# 5. Ekspor ke format dokumen laporan Markdown
+php .github/scripts/audit_kelompok.php --all --export=rekap_nilai_kontribusi.md
+
+# 6. (Opsional) Membatasi jumlah commit terakhir di terminal
+php .github/scripts/audit_kelompok.php --kelompok=09 --limit=10
 ```
 
 ---

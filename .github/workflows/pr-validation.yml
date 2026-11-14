@@ -1,4 +1,4 @@
-name: Validasi PR Tugas Besar Pemweb
+name: Validasi PR Tugas Besar Pemweb (DEADLINE CLOSED)
 
 on:
   pull_request_target:
@@ -8,147 +8,52 @@ on:
       - master
 
 jobs:
-  validate-pr:
-    name: Cek Isolasi Folder & Sintaks Kode
+  reject-pr-deadline:
+    name: ⛔ Penolakan Otomatis (Masa Deadline Telah Berakhir)
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
 
     steps:
-      - name: 1. Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-          allow-unsafe-pr-checkout: true
-
-      - name: 2. Cek Isolasi Folder Kelompok & File Terlarang
-        run: |
-          echo "Mengambil daftar file yang diubah pada Pull Request ini..."
-          git fetch origin ${{ github.base_ref }}
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
-          
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "❌ Tidak ada perubahan file yang terdeteksi."
-            exit 1
-          fi
-
-          echo "File yang diubah:"
-          echo "$CHANGED_FILES"
-          echo "----------------------------------------"
-
-          # 1. Pastikan hanya menyentuh folder kelompok/kelompok_XX/
-          INVALID_PATHS=$(echo "$CHANGED_FILES" | grep -vE '^kelompok/kelompok_[0-9]{2}/' || true)
-          if [ -n "$INVALID_PATHS" ]; then
-            echo "❌ DITOLAK: Anda mengubah file di luar folder kelompok yang diizinkan!"
-            echo "File yang melanggar aturan:"
-            echo "$INVALID_PATHS"
-            echo ""
-            echo "Pastikan Anda hanya menambah/mengubah file di dalam folder 'kelompok/kelompok_XX/' (contoh: kelompok/kelompok_01/)."
-            exit 1
-          fi
-
-          # 2. Pastikan hanya 1 folder kelompok yang diubah dalam 1 PR (mencegah merusak kelompok lain)
-          GROUPS_TOUCHED=$(echo "$CHANGED_FILES" | cut -d'/' -f2 | sort -u)
-          GROUP_COUNT=$(echo "$GROUPS_TOUCHED" | wc -l)
-
-          if [ "$GROUP_COUNT" -gt 1 ]; then
-            echo "❌ DITOLAK: Pull Request ini mengubah lebih dari satu folder kelompok sekaligus!"
-            echo "Folder kelompok yang tersentuh:"
-            echo "$GROUPS_TOUCHED"
-            exit 1
-          fi
-
-          echo "✅ Lolos uji isolasi: Perubahan hanya dilakukan pada folder kelompok/$GROUPS_TOUCHED/"
-
-          # 3. Sinkronkan folder .github/ resmi dari repo utama agar skrip validator selalu tersedia
-          echo "Memuat skrip validator dan mapping resmi dari origin/${{ github.base_ref }}..."
-          git checkout origin/${{ github.base_ref }} -- .github/
-
-      - name: 3. Cek Ukuran File (Maksimal 5MB per file)
-        run: |
-          CHANGED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }}...HEAD)
-          MAX_SIZE=$((5 * 1024 * 1024)) # 5 MB dalam bytes
-          
-          for file in $CHANGED_FILES; do
-            if [ -f "$file" ]; then
-              FILE_SIZE=$(stat -c%s "$file")
-              if [ "$FILE_SIZE" -gt "$MAX_SIZE" ]; then
-                echo "❌ DITOLAK: File '$file' berukuran terlalu besar ($(($FILE_SIZE / 1024 / 1024)) MB). Maksimal ukuran file adalah 5 MB."
-                exit 1
-              fi
-            fi
-          done
-          echo "✅ Semua ukuran file sesuai ketentuan."
-
-      - name: 4. Setup PHP Environment
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          coverage: none
-
-      - name: 5. Validasi Kepemilikan Fork Kelompok
-        env:
-          HEAD_REPO_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
-          BASE_REF: ${{ github.base_ref }}
-        run: |
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
-          GROUPS_TOUCHED=$(echo "$CHANGED_FILES" | cut -d'/' -f2 | sort -u | head -n 1)
-          GROUP_TOUCHED="$GROUPS_TOUCHED" php .github/scripts/validate_fork.php
-
-      - name: 6. Cek Sintaks PHP Native (PHP Lint)
-        run: |
-          CHANGED_PHP_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }}...HEAD | grep -E '\.php$' || true)
-          
-          if [ -z "$CHANGED_PHP_FILES" ]; then
-            echo "ℹ️ Tidak ada file PHP yang diubah/ditambahkan. Melewati pengecekan sintaks PHP."
-            exit 0
-          fi
-
-          echo "Memeriksa sintaks pada file PHP berikut:"
-          echo "$CHANGED_PHP_FILES"
-          echo "----------------------------------------"
-
-          ERROR_FOUND=0
-          for file in $CHANGED_PHP_FILES; do
-            php -l "$file" || ERROR_FOUND=1
-          done
-
-          if [ "$ERROR_FOUND" -ne 0 ]; then
-            echo "❌ DITOLAK: Ditemukan syntax error pada kode PHP Anda! Silakan perbaiki sebelum melakukan Merge."
-            exit 1
-          fi
-
-          echo "✅ Seluruh file PHP bebas dari syntax error."
-
-      - name: 7. Buat & Kirim Rekapitulasi Kontribusi Anggota ke PR
-        if: success()
-        continue-on-error: true
+      - name: ⛔ Tolak & Tutup Pull Request Otomatis
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          BASE_REF: ${{ github.base_ref }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
           REPO: ${{ github.repository }}
         run: |
-          php .github/scripts/pr_rekap_kontribusi.php
+          echo "=========================================================================="
+          echo "⛔ PENGUMUMAN: BATAS WAKTU (DEADLINE) PENGUMPULAN TUBES PEMWEB TELAH BERAKHIR"
+          echo "=========================================================================="
+          echo "Pull Request #${PR_NUMBER} dari @${PR_AUTHOR} ditolak secara otomatis."
+          echo "Repositori utama telah dikunci untuk penerimaan perubahan kode baru."
 
-      - name: 8. Auto-Merge PR Jika Lolos Semua Validasi
-        if: success()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "✅ Seluruh validasi lolos! Melakukan Auto-Merge Pull Request #${{ github.event.pull_request.number }}..."
-          gh pr merge ${{ github.event.pull_request.number }} --merge --repo ${{ github.repository }}
+          MSG="⛔ **Pull Request Ditolak dan Ditutup Otomatis: Batas Waktu (Deadline) Telah Berakhir**"
+          MSG="${MSG}"$'\n\n'"Halo @${PR_AUTHOR},"
+          MSG="${MSG}"$'\n\n'"Mohon maaf, Pull Request Anda tidak dapat diterima karena **batas waktu (deadline) pengumpulan Tugas Besar Praktikum Pemrograman Web 2026 telah resmi berakhir**."
+          MSG="${MSG}"$'\n\n'"Repositori utama saat ini telah dikunci untuk penerimaan perubahan kode baru guna keperluan penilaian akhir dan audit rekapitulasi kontribusi tim."
+          MSG="${MSG}"$'\n\n'"Apabila terdapat kendala teknis atau konfirmasi mendesak terkait pengumpulan kelompok, silakan segera menghubungi **Dosen Pengampu** atau **Tim Asisten Praktikum** melalui saluran komunikasi resmi praktikum."
+          MSG="${MSG}"$'\n\n'"Terima kasih atas kerja keras dan dedikasi seluruh anggota kelompok!"
 
-      - name: 9. Auto-Close PR Jika Gagal Validasi CI/CD
-        if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "❌ Validasi gagal! Menutup Pull Request #${{ github.event.pull_request.number }} secara otomatis..."
-          gh pr close ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --comment "❌ **Pull Request Ditolak dan Ditutup Otomatis oleh Sistem CI/CD.**
+          gh pr close "${PR_NUMBER}" --repo "${REPO}" --comment "${MSG}"
 
-          Kode yang Anda kirimkan melanggar ketentuan repositori (salah penamaan folder \`kelompok/kelompok_XX/\`, mengubah file di luar folder kelompok sendiri, PR dikirim dari fork yang tidak sesuai dengan folder kelompok, ukuran file > 5MB, atau terdapat *syntax error* PHP).
+          # Keluar dengan kode error agar status check CI/CD bertanda silang merah (failed)
+          exit 1
 
-          Silakan klik tombol **Details** pada bagian *checks* yang gagal di atas untuk melihat letak kesalahan Anda, perbaiki di lokal, lalu buat Pull Request baru."
+# ==============================================================================
+# ARSIP WORKFLOW VALIDASI SEBELUM DEADLINE (PRE-DEADLINE ARCHIVE)
+# ==============================================================================
+# Di bawah ini adalah konfigurasi validasi sebelum deadline berakhir (disimpan
+# sebagai arsip untuk referensi praktikum periode berikutnya):
+#
+# steps:
+#   - 1. Checkout Repository (actions/checkout@v4 ref: ${{ github.event.pull_request.head.sha }})
+#   - 2. Cek Isolasi Folder Kelompok & File Terlarang (hanya kelompok/kelompok_XX/)
+#   - 3. Cek Ukuran File (Maksimal 5MB per file)
+#   - 4. Setup PHP Environment (shivammathur/setup-php@v2 php 8.2)
+#   - 5. Validasi Kepemilikan Fork Kelompok (validate_fork.php)
+#   - 6. Cek Sintaks PHP Native (php -l)
+#   - 7. Buat & Kirim Rekapitulasi Kontribusi Anggota ke PR (pr_rekap_kontribusi.php)
+#   - 8. Auto-Merge PR Jika Lolos Semua Validasi (gh pr merge)
+#   - 9. Auto-Close PR Jika Gagal Validasi CI/CD (gh pr close)
